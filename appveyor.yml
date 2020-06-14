@@ -22,7 +22,8 @@ environment:
 install:
 - appveyor DownloadFile https://ecosysjfrog.jfrog.io/artifactory/liron-test/1.37.0/jfrog-cli-linux-amd64/jfrog -FileName jfrog
 - sh: chmod 555 ./jfrog
-- sh: sudo cp ./jfrog /usr/bin/
+- sh: mkdir -p ./tests/testData/jfrog/1.37.0/x64/
+- sh: sudo cp ./jfrog ./tests/testData/jfrog/1.37.0/x64/
 - sh: sudo pip install conan -q
 - cmd: pip install conan -q
 - cmd: nuget update -self
@@ -31,11 +32,7 @@ services:
 - docker
 
 test_script:
-- which mono
-- which nuget
-- mono --version
-- nuget ?
-- jfrog --version
+- mono /usr/bin/nuget ?
 - node --version
 - npm --version
 - npm t
