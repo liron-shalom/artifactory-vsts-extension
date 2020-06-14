@@ -497,6 +497,7 @@ describe('JFrog Artifactory Extension Tests', () => {
     });
 
     describe('NuGet Tests', () => {
+        let jfrogUtils = require('artifactory-tasks-utils');
         runTest(
             'NuGet restore Ver1',
             () => {
@@ -511,7 +512,7 @@ describe('JFrog Artifactory Extension Tests', () => {
                 getAndAssertBuild('NuGet Test', '3');
                 deleteBuild('NuGet Test');
             },
-            testUtils.isSkipTest('nuget')
+            !jfrogUtils.isWindows || testUtils.isSkipTest('nuget')
         );
         runTest(
             'NuGet restore Ver2',
@@ -545,7 +546,7 @@ describe('JFrog Artifactory Extension Tests', () => {
                 getAndAssertBuild('NuGet Test', '3');
                 deleteBuild('NuGet Test');
             },
-            testUtils.isSkipTest('nuget')
+            !jfrogUtils.isWindows || testUtils.isSkipTest('nuget')
         );
         runTest(
             'NuGet push Ver2',

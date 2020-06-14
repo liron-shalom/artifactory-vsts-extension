@@ -4,9 +4,8 @@ stack: node 8, python 3.8.2
 skip_tags: true
 environment:
   matrix:
-      - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        ADO_ARTIFACTORY_SKIP_TESTS: docker
       - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+        ADO_ARTIFACTORY_SKIP_TESTS:  maven,npm,go,gradle,conan,docker
 
   nodejs_version: "8"
   ADO_ARTIFACTORY_URL:
@@ -21,7 +20,9 @@ environment:
     secure: UjixvF6E1Bp1p8zgPRLCVA==
 
 install:
-- npm i -gq jfrog-cli-go
+- appveyor DownloadFile https://ecosysjfrog.jfrog.io/artifactory/liron-test/1.37.0/jfrog-cli-linux-amd64/jfrog -FileName jfrog
+- sh: chmod 555 ./jfrog
+- sh: sudo cp ./jfrog /usr/bin/
 - sh: sudo pip install conan -q
 - cmd: pip install conan -q
 - cmd: nuget update -self
@@ -30,6 +31,11 @@ services:
 - docker
 
 test_script:
+- which mono
+- which nuget
+- mono --version
+- nuget ?
+- jfrog --version
 - node --version
 - npm --version
 - npm t
