@@ -32,7 +32,6 @@ services:
 - docker
 
 test_script:
-- mono /usr/bin/nuget ?
 - node --version
 - npm --version
 - npm t
