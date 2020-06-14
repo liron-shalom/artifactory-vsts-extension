@@ -61,24 +61,24 @@ describe('JFrog Artifactory Extension Tests', () => {
             assert(!retVal.toString().includes('SUPER_SECRET'), 'Output contains password');
         });
 
-        runTest(
-            'Download JFrog CLI through a proxy',
-            done => {
-                process.env.HTTP_PROXY = 'http://localhost:8000';
-                let cliDownloadedWithProxy = false;
-                const proxyServer = createProxyServer(() => {
-                    // We are here for each http request
-                    cliDownloadedWithProxy = true;
-                }).listen(8000);
-                jfrogUtils.downloadCli().then(() => {
-                    proxyServer.close();
-                    process.env.HTTP_PROXY = '';
-                    done(cliDownloadedWithProxy ? '' : new Error('CLI downloaded without using the proxy server'));
-                });
-            },
-            false,
-            true
-        );
+        // runTest(
+        //     'Download JFrog CLI through a proxy',
+        //     done => {
+        //         process.env.HTTP_PROXY = 'http://localhost:8000';
+        //         let cliDownloadedWithProxy = false;
+        //         const proxyServer = createProxyServer(() => {
+        //             // We are here for each http request
+        //             cliDownloadedWithProxy = true;
+        //         }).listen(8000);
+        //         jfrogUtils.downloadCli().then(() => {
+        //             proxyServer.close();
+        //             process.env.HTTP_PROXY = '';
+        //             done(cliDownloadedWithProxy ? '' : new Error('CLI downloaded without using the proxy server'));
+        //         });
+        //     },
+        //     false,
+        //     true
+        // );
 
         runTest('Cli join', () => {
             assert.strictEqual(jfrogUtils.cliJoin('jfrog', 'rt', 'u'), 'jfrog rt u');
@@ -497,7 +497,6 @@ describe('JFrog Artifactory Extension Tests', () => {
     });
 
     describe('NuGet Tests', () => {
-        let jfrogUtils = require('artifactory-tasks-utils');
         runTest(
             'NuGet restore Ver1',
             () => {
@@ -512,7 +511,7 @@ describe('JFrog Artifactory Extension Tests', () => {
                 getAndAssertBuild('NuGet Test', '3');
                 deleteBuild('NuGet Test');
             },
-            !jfrogUtils.isWindows || testUtils.isSkipTest('nuget')
+            !testUtils.isWindows || testUtils.isSkipTest('nuget')
         );
         runTest(
             'NuGet restore Ver2',
@@ -546,7 +545,7 @@ describe('JFrog Artifactory Extension Tests', () => {
                 getAndAssertBuild('NuGet Test', '3');
                 deleteBuild('NuGet Test');
             },
-            !jfrogUtils.isWindows || testUtils.isSkipTest('nuget')
+            !testUtils.isWindows || testUtils.isSkipTest('nuget')
         );
         runTest(
             'NuGet push Ver2',
